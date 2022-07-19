@@ -3,7 +3,8 @@ class ArticlesController < ApplicationController
 		@articles = Article.all
 	end
 	def show
-		@article = Article.find(params[:id])
+		@article = Article.find_by(id: params[:id])
+		redirect_to root_path if @article.nil?
 	end
 	def new
 		@article = Article.new
@@ -18,10 +19,12 @@ class ArticlesController < ApplicationController
 		end
 	end
 	def edit
-		@article = Article.find(params[:id])
+		@article = Article.find_by(id: params[:id])
+    redirect_to root_path if @article.nil?
 	end
 	def update
-		@article = Article.find(params[:id])
+		@article = Article.find_by(id: params[:id])
+		redirect_to root_path if @article.nil?
 		if @article.update(article_params)
 			redirect_to @article
 		else
@@ -29,7 +32,8 @@ class ArticlesController < ApplicationController
 		end
 	end
 	def destroy
-		@article = Article.find(params[:id])
+		@article = Article.find_by(params[:id])
+		redirect_to root_path if @article.nil?
 		@article.destroy 
 		redirect_to root_path, status: :see_other
 	end
