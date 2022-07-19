@@ -1,0 +1,15 @@
+channels/application_cable/
+*.log
+helpers/
+jobs/
+mailers/
+bin/
+db/
+lib/
+log/
+public/
+storage/
+test/
+tmp/
+vendor/
+
