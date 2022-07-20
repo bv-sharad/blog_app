@@ -1,17 +1,13 @@
 class ArticlesController < ApplicationController
 
-	#before_action :load_article, except: [:index, :new, :create]
+	before_action :load_article, except: [:index, :new, :create]
 
-	#def load_article
-	#	@article = Article.find_by(id: params[:id])
-	#	if @article.nil?
-	#		redirect_to root_path
-	#		return
-	#	end
-	#end
-
-	def show
-		@article = Article.find(params[:id])
+	def load_article
+		@article = Article.find_by(id: params[:id])
+		if @article.nil?
+			redirect_to root_path
+			return
+		end
 	end
 
 	def index
@@ -23,7 +19,6 @@ class ArticlesController < ApplicationController
 	end
 
 	def create
-		@article = Article.find(params[:id])
 		begin
 			@article.save!
 			redirect_to @article
@@ -34,12 +29,7 @@ class ArticlesController < ApplicationController
 		end
 	end
 
-	def edit
-		@article = Article.find(params[:id])
-	end
-
 	def update
-		@article = Article.find(params[:id])
 		if @article.update(article_params)
 			redirect_to @article
 		else
@@ -48,7 +38,6 @@ class ArticlesController < ApplicationController
 	end
 
 	def destroy
-		@article = Article.find(params[:id])
 		@article.destroy if @article
 		redirect_to root_path, status: :see_other
 	end

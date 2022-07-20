@@ -29,3 +29,14 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/Gemfile.lock
+/Rakefile
+/bin/**
+/db/**
+/lib/**
+/package.json
+/public/**
+/test/**
+/vendor/**
+/config.ru
+
