@@ -32,7 +32,7 @@ class ArticlesController < ApplicationController
 		if @article.update(article_params)
 			redirect_to @article
 		else
-			blog1/blog/blogging_app1render :edit, status: :unprocessable_entity
+			render :edit, status: :unprocessable_entity
 		end
 	end
 
