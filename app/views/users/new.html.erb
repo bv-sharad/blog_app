@@ -1,0 +1,30 @@
+<div class = "form-style-9">
+	<h1> Sign up</h1>
+	<%= form_for @user do |f| %>
+		<p>
+		<%= f.label "Email" %>
+		<%= f.text_field :email %>
+		</p>
+		<p>
+		<%= f.label "Password" %>
+		<%= f.password_field :password %>
+		</p>
+		<p>
+		<%= f.label :password_confirmation %>
+		<%= f.password_field :password_confirmation %>
+		</p>
+		<p>
+		<%= f.submit "Sign Up" %>
+		</p>
+</div>
+<% if current_user %>
+	<p class = "alert">
+	<%= flash[:notice] %>
+	</p>
+<% else %>
+	<p class = "alert">
+	<%= flash[:alert] = "Please enter correct credentials"%>
+	</p>
+<% end %>
+ <%end%>
+

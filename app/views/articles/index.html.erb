@@ -1,0 +1,22 @@
+<body>
+    <% if current_user %>
+      <%= current_user.email %> | <%= link_to "Sign out", '/signout' %>
+    <% else %>
+      <%= link_to "Sign up", '/signup' %> | <%= link_to "Sign in", '/signin' %>
+    <% end %>
+    <%= yield %>
+</body>
+<div class="form-style-9">
+	<h1 >Articles</h1>
+	<h3 class="head_text">Our blog has <%= Article.public_count %> articles and counting!</h3>
+	<ul>
+		<% @articles.each do |article| %>
+			<% unless article.archived? %>
+				<li>
+					<%= link_to article.title, article %>
+				</li>
+			<% end %>
+		<% end %>
+	</ul>
+	<button class="button-27" role="button"><%= link_to "New Article", new_article_path %> </button>
+</div>
