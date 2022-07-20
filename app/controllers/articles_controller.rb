@@ -1,11 +1,12 @@
 class ArticlesController < ApplicationController
-	before_action :load_article, except: [:index, :new, :create] 
+
+	before_action :load_article, except: [:index, :new, :create]
 
 	def load_article
 		@article = Article.find_by(id: params[:id])
 		if @article.nil?
-			redirect_to root_path 
-			return 
+			redirect_to root_path
+			return
 		end
 	end
 
@@ -18,17 +19,16 @@ class ArticlesController < ApplicationController
 	end
 
 	def create
-		@article = Article.new(article_params)
 		begin
-      @article.save!
-      redirect_to @article
-    rescue => e
-      logger.error "letter_controller::create => exception #{e.class.name} : #{e.message}"
-      flash[:alert] = "Detailed error: #{e.message}"
-      render :new, status: :unprocessable_entity
-    end
+			@article.save!
+			redirect_to @article
+		rescue => e
+			logger.error "letter_controller::create => exception #{e.class.name} : #{e.message}"
+			flash[:alert] = "Detailed error: #{e.message}"
+			render :new, status: :unprocessable_entity
+		end
 	end
-	
+
 	def update
 		if @article.update(article_params)
 			redirect_to @article
