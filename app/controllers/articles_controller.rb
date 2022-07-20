@@ -1,42 +1,47 @@
 class ArticlesController < ApplicationController
+	before_action :load_article, except: [:index, :new, :create] 
+
+	def load_article
+		@article = Article.find_by(id: params[:id])
+		if @article.nil?
+			redirect_to root_path 
+			return 
+		end
+	end
+
 	def index
 		@articles = Article.all
 	end
-	def show
-		@article = Article.find_by(id: params[:id])
-		redirect_to root_path if @article.nil?
-	end
+
 	def new
 		@article = Article.new
 	end
+
 	def create
 		@article = Article.new(article_params)
-		if @article.save
-			redirect_to @article
-		else
-			flash[:al] = "Please enter unique title and atleast 10 letters in body"
-			render :new, status: :unprocessable_entity
-		end
+		begin
+      @article.save!
+      redirect_to @article
+    rescue => e
+      logger.error "letter_controller::create => exception #{e.class.name} : #{e.message}"
+      flash[:alert] = "Detailed error: #{e.message}"
+      render :new, status: :unprocessable_entity
+    end
 	end
-	def edit
-		@article = Article.find_by(id: params[:id])
-		redirect_to root_path if @article.nil?
-	end
+	
 	def update
-		@article = Article.find_by(id: params[:id])
-		redirect_to root_path if @article.nil?
 		if @article.update(article_params)
 			redirect_to @article
 		else
 			render :edit, status: :unprocessable_entity
 		end
 	end
+
 	def destroy
-		@article = Article.find_by(params[:id])
-		redirect_to root_path if @article.nil?
-		@article.destroy 
+		@article.destroy if @article
 		redirect_to root_path, status: :see_other
 	end
+
 	private
 	def article_params
 		params.require(:article).permit(:title, :body, :status, :user)

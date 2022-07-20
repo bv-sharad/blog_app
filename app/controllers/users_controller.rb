@@ -4,13 +4,13 @@ class UsersController < ApplicationController
 	end
 	def create
 		@user = User.new(user_params)
-		if @user.save
+		if @user.save!
 			flash[:notice] = "You've successfully signed up!"
 			session[:user_id] = @user.id
 			session[:email] = @user.email
 			redirect_to "/"
 		else
-			flash[:al] = "There was a problem signing up."
+			flash[:alert] = "There was a problem signing up."
 			redirect_to signup_path
 		end
 	end
