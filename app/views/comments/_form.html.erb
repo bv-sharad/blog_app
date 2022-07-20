@@ -1,19 +1,19 @@
 <%= form_with model: [ @article, @article.comments.build ] do |form| %>
-  <div class="form-style-9">
-	<%= form.label :commenter %><br>
-	<%= form.text_field :commenter, :disabled => false, :readonly=> true,  value: current_u.email %>
+	<div class="form-style-9">
+		<%= form.label :commenter %><br>
+		<%= form.text_field :commenter, :disabled => false, :readonly=> true,  value: current_u.email %>
 	</div>
-  <div class="form-style-9">
-    <%= form.label :body %><br>
-    <%= form.text_area :body %>
+	<div class="form-style-9">
+		<%= form.label :body %><br>
+		<%= form.text_area :body %>
 	</div>
 
-	 <div class="form-style-9">
-  <%= form.label :status %><br>
-  <%= form.select :status, ['public', 'private', 'archived'], selected: 'public' %>
-	 </div>
+	<div class="form-style-9">
+		<%= form.label :status %><br>
+		<%= form.select :status, ['public', 'private', 'archived'], selected: 'public' %>
+	</div>
 
-  <div class="form-style-9">
+	<div class="form-style-9">
 		<%= form.submit %>
 	</div>
 <% end %>

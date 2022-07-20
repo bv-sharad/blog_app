@@ -1,22 +1,22 @@
-<% unless comment.archived? %>
+<% if !comment.archived? %>
 	<div class="div_text">
 		<div
-  <strong> <h4>Commenter:</h4></strong>
-  <%= comment.commenter %>
-   </div>
+			<strong> <h4>Commenter:</h4></strong>
+			<%= comment.commenter %>
+		</div>
 
-   <div>
-		 <strong> <h4>Comment:</h4></strong>
-  <%= comment.body %>
-   </div>
+		<div>
+			<strong> <h4>Comment:</h4></strong>
+			<%= comment.body %>
+		</div>
 
-	 <% if  current_u && (current_u.email == @article.user || current_u.admin) %>
-  <div>
-  <%= link_to "Destroy Comment", [comment.article, comment], data: {
-                method: :delete,
-                confirm: "Are you sure?"
-	} %>
+		<% if  current_u && (current_u.email == @article.user || current_u.admin) %>
+			<div>
+				<%= link_to "Destroy Comment", [comment.article, comment], data: {
+					method: :delete,
+					confirm: "Are you sure?"
+				} %>
+			</div>
+		<%end%>
 	</div>
-<%end%>
-</div>
 <% end %>

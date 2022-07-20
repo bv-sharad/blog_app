@@ -6,7 +6,8 @@ class CommentsController < ApplicationController
 		if @article.nil?
 			redirect_to article_path(@article)
 			return
-			article_path(@article) end
+			article_path(@article) 
+		end
 	end
 
 	def create

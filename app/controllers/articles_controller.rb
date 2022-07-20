@@ -1,5 +1,4 @@
 class ArticlesController < ApplicationController
-
 	before_action :load_article, except: [:index, :new, :create]
 
 	def load_article
@@ -33,7 +32,7 @@ class ArticlesController < ApplicationController
 		if @article.update(article_params)
 			redirect_to @article
 		else
-			render :edit, status: :unprocessable_entity
+			blog1/blog/blogging_app1render :edit, status: :unprocessable_entity
 		end
 	end
 
