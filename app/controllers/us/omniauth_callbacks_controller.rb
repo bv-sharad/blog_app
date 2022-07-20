@@ -3,10 +3,10 @@ class Us::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 		user = U.from_omniauth(auth)
 		if user.present?
 			sign_out_all_scopes
-			flash[:success] = 'devise.omniauth_callbacks.success', kind: 'Google'
+			flash[:success] = t 'devise.omniauth_callbacks.success', kind: 'Google'
 			sign_in_and_redirect user, event: :authentication
 		else
-			flash[:alert] = 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."
+			flash[:alert] = t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."
 			redirect_to new_u_session_path
 		end
 	end
