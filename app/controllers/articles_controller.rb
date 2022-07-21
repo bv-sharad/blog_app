@@ -1,7 +1,8 @@
 class ArticlesController < ApplicationController
 
 	before_action :load_article, except: [:index, :new, :create]
-
+  
+	#index
 	def load_article
 		@article = Article.find_by(id: params[:id])
 		if @article.nil?
