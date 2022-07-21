@@ -55,11 +55,11 @@ class ArticlesController < ApplicationController
 	end
 
 	def load_article
-    @article = Article.find_by(id: params[:id])
-    if @article.nil?
-      flash[:alert] = "No such article found"
-      redirect_to root_path
-      return
-    end
-  end
+		@article = Article.find_by(id: params[:id])
+		if @article.nil?
+			flash[:alert] = "No such article found"
+			redirect_to root_path
+			return
+		end
+	end
 end
