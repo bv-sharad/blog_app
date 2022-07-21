@@ -1,0 +1,27 @@
+<%= form_with model: article do |form| %>
+	<%= form.text_field :user , :readonly => true, value: current_u.email %>
+	<div class="form-style-9">
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+    <% article.errors.full_messages_for(:title).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="form-style-9">
+    <%= form.label :body %><br>
+    <%= form.text_area :body %><br>
+    <% article.errors.full_messages_for(:body).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  
+	<div class="form-style-9">
+  <%= form.label :status %><br>
+  <%= form.select :status, ['public', 'private', 'archived'], selected: 'public' %>
+	</div>
+
+  <div class="form-style-9">
+		<%= form.submit %>
+  </div>
+<% end %>

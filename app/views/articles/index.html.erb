@@ -1,26 +1,31 @@
 <body>
-  <% if  u_signed_in? %>
-    <%= link_to "Hi, #{current_u.email}", edit_u_registration_path %> | <%= link_to 'Sign Out', destroy_u_session_path, method: :delete %>
-    <% else %>
-      <h2>You're Logged out!</h2>
-      <%= link_to "Sign up", new_u_registration_path %> | <%= link_to "Sign in",  new_u_session_path %>
-      <%= link_to "Sign in with Google", u_google_oauth2_omniauth_authorize_path , method: :post %>
-    <% end %>
+	<% if  u_signed_in? %>
+		<%= link_to "Hi, #{current_u.email}", edit_u_registration_path %> | <%= link_to 'Sign Out', destroy_u_session_path, method: :delete %>
+	<% else %>
+		<h2>You're Logged out!</h2>
+		<%= link_to "Sign up", new_u_registration_path %> | <%= link_to "Sign in",  new_u_session_path %>
+		<%= link_to "Sign in with Google", u_google_oauth2_omniauth_authorize_path , method: :post %>
+	<% end %>
 
-    <%= yield %>
+	<%= yield %>
 </body>
 <div class="form-style-9">
-  <h1 >Articles</h1>
+	<h1 >Articles</h1>
 
-  <h3 class="head_text">Our blog has <%= Article.public_count %> articles and counting!</h3>
+	<h3 class="head_text">Our blog has <%= Article.public_count %> articles and counting!</h3>
 	<ul>
-	  <%@articles.each do |article| %>
-		<% unless article.archived? %>
-    <li>
-      <%= link_to article.title, article %>
-    </li>
-	  <%end %>
-  <%end %>
-  </ul>
-  <button class="button-27" role="button"><%= link_to "New Article", new_article_path %> </button>
+		<%@articles.each do |article| %>
+			<% unless article.archived? %>
+				<li>
+					<%= link_to article.title, article %>
+				</li>
+			<%end %>
+		<%end %>
+	</ul>
+	<button class="button-27" role="button"><%= link_to "New Article", new_article_path %> </button>
+	<% flash.each do |type, msg| %>
+		<div class ="alert">
+			<%= msg %>
+		</div>
+	<% end %>
 </div>

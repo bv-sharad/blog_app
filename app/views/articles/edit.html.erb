@@ -1,9 +1,4 @@
 <div class="form-style-9">
- <%if current_u%>
    <h1>Edit Article</h1>
-
    <%= render "form", article: @article %>
- <% else %>
-   <% flash[:signin] %> Please signin to continue
- <%end%>
 </div>
