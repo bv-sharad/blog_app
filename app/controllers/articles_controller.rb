@@ -1,13 +1,6 @@
 class ArticlesController < ApplicationController
-	before_action :load_article, except: [:index, :new, :create]
 
-	def load_article
-		@article = Article.find_by(id: params[:id])
-		if @article.nil?
-			redirect_to root_path
-			return
-		end
-	end
+	before_action :load_article, except: [:index, :new, :create]
 
 	def index
 		@articles = Article.all
@@ -18,7 +11,12 @@ class ArticlesController < ApplicationController
 	end
 
 	def create
+		if !current_u
+			flash[:alert] = " Please Sign in to continue "
+			return
+		end
 		begin
+			@article = Article.new(article_params)
 			@article.save!
 			redirect_to @article
 		rescue => e
@@ -29,20 +27,39 @@ class ArticlesController < ApplicationController
 	end
 
 	def update
-		if @article.update(article_params)
-			redirect_to @article
+		if current_u.id == @article.user_id || current_u.admin
+			if @article.update(article_params)
+				redirect_to @article
+			else
+				render :edit, status: :unprocessable_entity
+			end
 		else
-			render :edit, status: :unprocessable_entity
+			flash[:alert] = "You are not authorized to edit this article"
+			redirect_to article_path(@article)
 		end
 	end
 
 	def destroy
-		@article.destroy if @article
-		redirect_to root_path, status: :see_other
+		if current_u.id == @article.user_id || current_u.admin
+			@article.destroy
+			redirect_to root_path, status: :see_other
+		else
+			flash[:alert] = "You are not authorized to delete this article"
+			redirect_to article_path(@article)
+		end
 	end
 
 	private
 	def article_params
-		params.require(:article).permit(:title, :body, :status, :user)
+		params.require(:article).permit(:title, :body, :status, :user_id)
 	end
+
+	def load_article
+    @article = Article.find_by(id: params[:id])
+    if @article.nil?
+      flash[:alert] = "No such article found"
+      redirect_to root_path
+      return
+    end
+  end
 end

@@ -1,5 +1,5 @@
 <%= form_with model: article do |form| %>
-	<%= form.text_field :user , :readonly => true, value: current_u.email %>
+	<%= form.text_field :user_id , :readonly => true, value: current_u.id %>
 	<div class="form-style-9">
 		<%= form.label :title %><br>
 		<%= form.text_field :title %>
@@ -24,4 +24,9 @@
 	<div class="form-style-9">
 		<%= form.submit %>
 	</div>
+	<% flash.each do |type, msg| %>
+		<div class="alert" >
+			<%= msg %>
+		</div>
+	<% end %>
 <% end %>
