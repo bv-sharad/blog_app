@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :edit_or_delete, only: [:update, :destroy]
+	before_action :edit_or_delete, only: [:update, :destroy]
 	before_action :load_article, except: [:index, :new, :create]
 
 	def index
@@ -28,16 +28,16 @@ class ArticlesController < ApplicationController
 	end
 
 	def update
-			if @article.update(article_params)
-				redirect_to @article
-			else
-				render :edit, status: :unprocessable_entity
-			end
+		if @article.update(article_params)
+			redirect_to @article
+		else
+			render :edit, status: :unprocessable_entity
+		end
 	end
 
 	def destroy
-			@article.destroy
-			redirect_to root_path, status: :see_other
+		@article.destroy
+		redirect_to root_path, status: :see_other
 	end
 
 	private
@@ -55,11 +55,11 @@ class ArticlesController < ApplicationController
 	end
 
 	def edit_or_delete
-    @current_user_article = current_u.articles.find_by(id: params[:id])
-     if @current_user_article.nil? && !current_u.admin
-      flash[:alert] = "You are not authorized to edit or delete this article"
-      redirect_to article_path(@article)
-      return
-    end
-  end
+		@current_user_article = current_u.articles.find_by(id: params[:id])
+		if @current_user_article.nil? && !current_u.admin
+			flash[:alert] = "You are not authorized to edit or delete this article"
+			redirect_to article_path(@article)
+			return
+		end
+	end
 end
