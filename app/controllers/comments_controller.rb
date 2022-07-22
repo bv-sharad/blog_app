@@ -5,7 +5,6 @@ class CommentsController < ApplicationController
 		begin
 			comment_params.merge!(:article_id => @article.id)
 			@comment = Comment.create(comment_params)
-			#@comment = @article.comments.create(comment_params)
 		rescue StandardError => e
 			logger.error "letter_controller::create => exception #{e.class.name} : #{e.message}"
 			flash[:alert] = "Detailed error: #{e.message}"
@@ -15,14 +14,19 @@ class CommentsController < ApplicationController
 	end
 
 	def destroy
-		@comment = @article.comments.find(params[:id])
-		@comment.destroy
+		@comment = @article.comments.find_by(params[:id])
+		if @comment
+			@comment.destroy
+		else
+			flash[:alert] = "No such comment found"
+			return
+		end
 		redirect_to article_path(@article), status: 303
 	end
 
 	private
 	def comment_params
-		params.require(:comment).permit(:commenter, :body, :status, :user_id, :article_id)
+		params.require(:comment).permit(:commenter, :body, :status)
 	end
 
 	def load_article

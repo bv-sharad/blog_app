@@ -16,7 +16,8 @@ class ArticlesController < ApplicationController
 			return
 		end
 		begin
-			@article = Article.new(article_params)
+			article_params.merge!(:u_id => current_u.id)
+      @article = Article.create(article_params)
 			@article.save!
 			redirect_to @article
 		rescue => e
@@ -27,7 +28,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def update
-		if current_u.id == @article.user_id || current_u.admin
+		if @current_user_article || current_u.admin
 			if @article.update(article_params)
 				redirect_to @article
 			else
@@ -40,7 +41,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def destroy
-		if current_u.id == @article.user_id || current_u.admin
+		if @current_user_article || current_u.admin
 			@article.destroy
 			redirect_to root_path, status: :see_other
 		else
@@ -51,11 +52,12 @@ class ArticlesController < ApplicationController
 
 	private
 	def article_params
-		params.require(:article).permit(:title, :body, :status, :user_id)
+		params.require(:article).permit(:title, :body, :status)
 	end
 
 	def load_article
 		@article = Article.find_by(id: params[:id])
+		@current_user_article = current_u.articles.find_by(id: params[:id])
 		if @article.nil?
 			flash[:alert] = "No such article found"
 			redirect_to root_path
