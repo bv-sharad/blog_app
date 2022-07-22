@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-	before_action :edit_or_delete, only: [:update, :destroy]
+	before_action :validate_permission_to_edit_or_delete, only: [:update, :destroy]
 	before_action :load_article, except: [:index, :new, :create]
 
 	def index
@@ -54,7 +54,7 @@ class ArticlesController < ApplicationController
 		end
 	end
 
-	def edit_or_delete
+	def validate_permission_to_edit_or_delete
 		@current_user_article = current_u.articles.find_by(id: params[:id])
 		if @current_user_article.nil? && !current_u.admin
 			flash[:alert] = "You are not authorized to edit or delete this article"
