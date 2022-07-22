@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-
+  before_action :edit_or_delete, only: [:update, :destroy]
 	before_action :load_article, except: [:index, :new, :create]
 
 	def index
@@ -17,7 +17,7 @@ class ArticlesController < ApplicationController
 		end
 		begin
 			article_params.merge!(:u_id => current_u.id)
-      @article = Article.create(article_params)
+			@article = Article.create(article_params)
 			@article.save!
 			redirect_to @article
 		rescue => e
@@ -28,26 +28,16 @@ class ArticlesController < ApplicationController
 	end
 
 	def update
-		if @current_user_article || current_u.admin
 			if @article.update(article_params)
 				redirect_to @article
 			else
 				render :edit, status: :unprocessable_entity
 			end
-		else
-			flash[:alert] = "You are not authorized to edit this article"
-			redirect_to article_path(@article)
-		end
 	end
 
 	def destroy
-		if @current_user_article || current_u.admin
 			@article.destroy
 			redirect_to root_path, status: :see_other
-		else
-			flash[:alert] = "You are not authorized to delete this article"
-			redirect_to article_path(@article)
-		end
 	end
 
 	private
@@ -57,11 +47,19 @@ class ArticlesController < ApplicationController
 
 	def load_article
 		@article = Article.find_by(id: params[:id])
-		@current_user_article = current_u.articles.find_by(id: params[:id])
 		if @article.nil?
 			flash[:alert] = "No such article found"
 			redirect_to root_path
 			return
 		end
 	end
+
+	def edit_or_delete
+    @current_user_article = current_u.articles.find_by(id: params[:id])
+     if @current_user_article.nil? && !current_u.admin
+      flash[:alert] = "You are not authorized to edit or delete this article"
+      redirect_to article_path(@article)
+      return
+    end
+  end
 end
