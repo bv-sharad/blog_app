@@ -3,8 +3,8 @@ class CommentsController < ApplicationController
 
 	def create
 		begin
-			comment_params.merge!(:article_id => @article.id)
-			@comment = Comment.create(comment_params)
+			#comment_params.merge!(:article_id => @article.id)
+			@comment = @article.comments.create(comment_params)
 		rescue StandardError => e
 			logger.error "letter_controller::create => exception #{e.class.name} : #{e.message}"
 			flash[:alert] = "Detailed error: #{e.message}"

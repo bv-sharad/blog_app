@@ -5,6 +5,7 @@
 		<h2>You're Logged out!</h2>
 		<%= link_to "Sign up", new_u_registration_path %> | <%= link_to "Sign in",  new_u_session_path %>
 		<%= link_to "Sign in with Google", u_google_oauth2_omniauth_authorize_path , method: :post %>
+		 <%= link_to "Sign in to active admin", new_admin_user_session_path %>
 	<% end %>
 
 	<%= yield %>
