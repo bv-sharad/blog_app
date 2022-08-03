@@ -16,8 +16,8 @@ class ArticlesController < ApplicationController
 			return
 		end
 		begin
-			#article_params.merge!(:u_id => current_u.id)
-			@article = current_u.articles.create(article_params)
+			article_params.merge!(:u_id => current_u.id)
+			@article = Article.create(article_params)
 			@article.save!
 			redirect_to @article
 		rescue => e
