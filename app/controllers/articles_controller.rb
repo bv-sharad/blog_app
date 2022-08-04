@@ -1,13 +1,6 @@
 class ArticlesController < ApplicationController
-	before_action :load_article, except: [:index, :new, :create] 
-
-	def load_article
-		@article = Article.find_by(id: params[:id])
-		if @article.nil?
-			redirect_to root_path 
-			return 
-		end
-	end
+	before_action :validate_permission_to_edit_or_delete, only: [:update, :destroy]
+	before_action :load_article, except: [:index, :new, :create]
 
 	def index
 		@articles = Article.all
@@ -18,17 +11,22 @@ class ArticlesController < ApplicationController
 	end
 
 	def create
-		@article = Article.new(article_params)
+		if !current_u
+			flash[:alert] = " Please Sign in to continue "
+			return
+		end
 		begin
-      @article.save!
-      redirect_to @article
-    rescue => e
-      logger.error "letter_controller::create => exception #{e.class.name} : #{e.message}"
-      flash[:alert] = "Detailed error: #{e.message}"
-      render :new, status: :unprocessable_entity
-    end
+			article_params.merge!(:u_id => current_u.id)
+			@article = Article.create(article_params)
+			@article.save!
+			redirect_to @article
+		rescue => e
+			logger.error "letter_controller::create => exception #{e.class.name} : #{e.message}"
+			flash[:alert] = "Detailed error: #{e.message}"
+			render :new, status: :unprocessable_entity
+		end
 	end
-	
+
 	def update
 		if @article.update(article_params)
 			redirect_to @article
@@ -38,12 +36,30 @@ class ArticlesController < ApplicationController
 	end
 
 	def destroy
-		@article.destroy if @article
+		@article.destroy
 		redirect_to root_path, status: :see_other
 	end
 
 	private
 	def article_params
-		params.require(:article).permit(:title, :body, :status, :user)
+		params.require(:article).permit(:title, :body, :status)
+	end
+
+	def load_article
+		@article = Article.find_by(id: params[:id])
+		if @article.nil?
+			flash[:alert] = "No such article found"
+			redirect_to root_path
+			return
+		end
+	end
+
+	def validate_permission_to_edit_or_delete
+		@current_user_article = current_u.articles.find_by(id: params[:id])
+		if @current_user_article.nil? && !current_u.admin
+			flash[:alert] = "You are not authorized to edit or delete this article"
+			redirect_to article_path(@article)
+			return
+		end
 	end
 end

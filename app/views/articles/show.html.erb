@@ -2,19 +2,24 @@
 	<h1><%= @article.title %></h1>
 	<div class="art_text"><%= @article.body %></div>
 </div>
-<% if current_name == @article.user %>
-	<div class="option form-style-9">
-		<ul>
-			<li><%= link_to "Edit", edit_article_path(@article) %></li>
-			<li><%= link_to "Destroy", article_path(@article),data: {method: :delete} %></li>
-		</ul>
+
+<div class="option form-style-9">
+	<ul>
+		<li><%= link_to "Edit", edit_article_path(@article) %></li>
+		<li><%= link_to "Destroy", article_path(@article),data: {
+			method: :delete} %></li>
+	</ul>
+</div>
+<% flash.each do |type, msg| %>
+	<div class = "alert" >
+		<%= msg %>
 	</div>
-<%end%>
+<% end %>
 <div class="form-style-9">
 	<h2>Comments</h2>
 	<%= render @article.comments %>
+	<% if current_u %>
+		<h2>Add a comment:</h2>
+		<%= render 'comments/form' %>
+	<% end %>
 </div>
-<% if current_user %>
-	<h2>Add a comment:</h2>
-	<%= render 'comments/form' %>
-<%end%>

@@ -1,5 +1,4 @@
 <%= form_with model: article do |form| %>
-	<%= form.text_field :user , :readonly => true, value: current_name %>
 	<div class="form-style-9">
 		<%= form.label :title %><br>
 		<%= form.text_field :title %>
@@ -7,6 +6,7 @@
 			<div><%= message %></div>
 		<% end %>
 	</div>
+
 	<div class="form-style-9">
 		<%= form.label :body %><br>
 		<%= form.text_area :body %><br>
@@ -14,11 +14,18 @@
 			<div><%= message %></div>
 		<% end %>
 	</div>
+
 	<div class="form-style-9">
 		<%= form.label :status %><br>
 		<%= form.select :status, ['public', 'private', 'archived'], selected: 'public' %>
 	</div>
+
 	<div class="form-style-9">
 		<%= form.submit %>
 	</div>
+	<% flash.each do |type, msg| %>
+		<div class="alert" >
+			<%= msg %>
+		</div>
+	<% end %>
 <% end %>
