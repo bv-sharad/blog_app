@@ -1,6 +1,7 @@
 class ArticlesController < ApplicationController
-	before_action :validate_permission_to_edit_or_delete, only: [:update, :destroy]
+	before_action :load_user, only: [:create, :update, :destroy, :validate_permission_to_edit_or_delete]
 	before_action :load_article, except: [:index, :new, :create]
+	before_action :validate_permission_to_edit_or_delete, only: [:update, :destroy]
 
 	def index
 		@articles = Article.all
@@ -11,24 +12,20 @@ class ArticlesController < ApplicationController
 	end
 
 	def create
-		if !current_u
-			flash[:alert] = " Please Sign in to continue "
-			return
-		end
 		begin
-			article_params.merge!(:u_id => current_u.id)
-			@article = Article.create(article_params)
+			@params = article_params
+			@params.merge!(:u_id => current_u.id)
+			@article = Article.create(params)
 			@article.save!
 			redirect_to @article
 		rescue => e
-			logger.error "letter_controller::create => exception #{e.class.name} : #{e.message}"
 			flash[:alert] = "Detailed error: #{e.message}"
-			render :new, status: :unprocessable_entity
+			redirect_to root_path
 		end
 	end
 
 	def update
-		if @article.update(article_params)
+		if @article.update!(article_params)
 			redirect_to @article
 		else
 			render :edit, status: :unprocessable_entity
@@ -36,7 +33,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def destroy
-		@article.destroy
+		@article.destroy!
 		redirect_to root_path, status: :see_other
 	end
 
@@ -59,6 +56,14 @@ class ArticlesController < ApplicationController
 		if @current_user_article.nil? && !current_u.admin
 			flash[:alert] = "You are not authorized to edit or delete this article"
 			redirect_to article_path(@article)
+			return
+		end
+	end
+
+	def load_user
+		if !current_u
+			flash[:alert] = " Please Sign in to continue "
+			redirect_to root_path
 			return
 		end
 	end

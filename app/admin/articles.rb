@@ -1,54 +1,46 @@
 ActiveAdmin.register Article do
 
-	# See permitted parameters documentation:
-	# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-	#
-	# Uncomment all parameters which should be permitted for assignment
-	#
-	# permit_params :title, :body, :status, :user, :user_id, :u_id
-	#
-	# or
-	#
-	# permit_params do
-	#   permitted = [:title, :body, :status, :user, :user_id, :u_id]
-	#   permitted << :other if params[:action] == 'create' && current_user.admin?
-	#   permitted
-	# end
-	actions :all, :except => [:destroy, :edit] 
-	permit_params :body, :U, :title, :status
-
+  actions :index, :show, :create, :new
+	permit_params :body, :title, :status, :u_id
+  
 	filter :id
-	filter :title
-	filter :u_id
+  filter :u_id
+	filter :created_at
+	filter :updated_at
+	filter :status
+	filter :article_id
 
-	index do
-		selectable_column
-		id_column
-		column :title
+  index do
+    id_column
+    column :title
 		column :created_at
 		column :updated_at
 		column :status
 		column :u
-	end
-
+  end
+  
 	show do
-		attributes_table do
-			row :title
+    attributes_table do
+			row :id
+      row :title
 			row :body
-			row :created_at
-			row :updated_at
+      row :created_at
+      row :updated_at
 			row :status
-			row :u
-		end
-		active_admin_comments
-	end
+      row :u
+			row :Comments do
+				link_to('Comments',admin_comments_path({q: {article_id_eq: article.id}}))
+			end
+    end
+  end
 
-	form do |f|
-		f.inputs do
-			f.input :title
-			f.input :body
-			f.input :status
-		end
-		f.actions
-	end
+  form do |f|
+    f.inputs do
+      f.input :title
+      f.input :body
+      f.input :status
+			f.input :u_id
+    end
+    f.actions
+  end
 end
