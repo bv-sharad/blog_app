@@ -19,10 +19,10 @@ ActiveAdmin.register U do
 			row :id
 			row :email
 			row :Articles do
-				link_to('Articles',admin_articles_path("q[u_id_equals]" => u.id))
+				link_to('Articles', admin_articles_path("q[u_id_equals]" => u.id))
 			end
 			row :Comments do
-				link_to 'Comments',admin_comments_path("q[u_id_equals]" => u.id)
+				link_to 'Comments', admin_comments_path("q[u_id_equals]" => u.id)
 			end
 			row :created_at
 			row :updated_at

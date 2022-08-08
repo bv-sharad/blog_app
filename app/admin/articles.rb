@@ -33,7 +33,7 @@ ActiveAdmin.register Article do
 				link_to("#{article.u.id}: #{article.u.email}", admin_u_path(article.u_id))
 			end
 			row :Comments do
-				link_to('Comments',admin_comments_path({q: {article_id_eq: article.id}}))
+				link_to('Comments', admin_comments_path({q: {article_id_eq: article.id}}))
 			end
 		end
 	end
