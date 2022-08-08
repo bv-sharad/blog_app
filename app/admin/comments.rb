@@ -41,7 +41,7 @@ ActiveAdmin.register Comment do
 			f.input :u_id
 			f.input :article, :as => :select
 			f.input :body
-			f.input :status, :as => :select, :collection => ['public' , 'private' , 'archived' ]
+			f.input :status, :as => :select, :collection => ['public' , 'private' , 'archived']
 		end
 		f.actions
 	end

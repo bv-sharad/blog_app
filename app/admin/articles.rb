@@ -42,7 +42,7 @@ ActiveAdmin.register Article do
 		f.inputs do
 			f.input :title
 			f.input :body
-			f.input :status
+			f.input :status, :as => :select, :collection => ['public' , 'private' , 'archived']
 			f.input :u_id
 		end
 		f.actions
