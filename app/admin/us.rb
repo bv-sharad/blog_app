@@ -6,6 +6,7 @@ ActiveAdmin.register U do
 	filter :id
   filter :email
 	filter :created_at
+	filter :updated_at
   
   index do
     id_column
@@ -15,15 +16,16 @@ ActiveAdmin.register U do
  
 	show do
     attributes_table do
+			row :id
       row :email
-      row :created_at
-      row :updated_at
       row :Articles do
-        link_to('Articles',admin_articles_path({q: {u_id_eq: u.id}}))
+        link_to('Articles',admin_articles_path("q[u_id_equals]" => u.id))
        end
 			row :Comments do
-				link_to('Comments',admin_comments_path({q: {u_id_eq: u.id}}))
+				link_to 'Comments',admin_comments_path("q[u_id_equals]" => u.id)
 			end
+			row :created_at
+			row :updated_at
     end
   end
 

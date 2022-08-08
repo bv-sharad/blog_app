@@ -16,7 +16,9 @@ ActiveAdmin.register Article do
 		column :created_at
 		column :updated_at
 		column :status
-		column :u
+		column :user do |article|
+        link_to("#{article.u_id}",admin_us_path("q[id_eq]" => article.u_id))
+      end
   end
   
 	show do
@@ -26,8 +28,10 @@ ActiveAdmin.register Article do
 			row :body
       row :created_at
       row :updated_at
-			row :status
-      row :u
+			row :Article::status
+      row :user do |article| 
+				link_to("#{article.u.id}: #{article.u.email}",admin_us_path("q[id_eq]" => article.u_id))
+			end
 			row :Comments do
 				link_to('Comments',admin_comments_path({q: {article_id_eq: article.id}}))
 			end

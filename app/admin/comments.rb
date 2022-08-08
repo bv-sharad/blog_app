@@ -7,21 +7,32 @@ ActiveAdmin.register Comment do
   filter :u_id
   filter :article_id
 	filter :created_at
+	filter :updated_at
 	filter :body
   
   index do
     id_column
     column :created_at
+		column :Article do |comment|
+			link_to("#{comment.article_id}",admin_articles_path("q[id_equals]" => comment.article_id))
+		end
+		column :User do |comment|
+			link_to("#{comment.u_id}", admin_us_path("q[id_equals]" => comment.u_id))
+		end
   end
  
 	show do
     attributes_table do
       row :id
 			row :body
-			row :article
+			row :Article do |comment|
+				link_to("#{comment.article_id}: #{comment.article.title}", admin_articles_path("q[id_equals]" => comment.article_id))
+			end
+			row :User do |comment|
+				link_to("#{comment.u_id}: #{comment.u.email}", admin_us_path("q[id_equals]" => comment.u_id))
+			end
       row :created_at
       row :updated_at
-      row :u
     end
   end
 
