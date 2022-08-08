@@ -28,7 +28,7 @@ ActiveAdmin.register Article do
 			row :body
 			row :created_at
 			row :updated_at
-			row :status, :as => :select, :collection => ['public' , 'private' , 'archived' ]
+			row :status
 			row :user do |article| 
 				link_to("#{article.u.id}: #{article.u.email}", admin_u_path(article.u_id))
 			end
