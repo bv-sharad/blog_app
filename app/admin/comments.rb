@@ -14,10 +14,10 @@ ActiveAdmin.register Comment do
 		id_column
 		column :created_at
 		column :Article do |comment|
-			link_to("#{comment.article_id}",admin_articles_path("q[id_equals]" => comment.article_id))
+			link_to("#{comment.article_id}",admin_article_path(comment.article_id))
 		end
 		column :User do |comment|
-			link_to("#{comment.u_id}", admin_us_path("q[id_equals]" => comment.u_id))
+			link_to("#{comment.u_id}", admin_u_path(comment.u_id))
 		end
 	end
 
@@ -26,10 +26,10 @@ ActiveAdmin.register Comment do
 			row :id
 			row :body
 			row :Article do |comment|
-				link_to("#{comment.article_id}: #{comment.article.title}", admin_articles_path("q[id_equals]" => comment.article_id))
+				link_to("#{comment.article_id}: #{comment.article.title}", admin_article_path(comment.article_id))
 			end
 			row :User do |comment|
-				link_to("#{comment.u_id}: #{comment.u.email}", admin_us_path("q[id_equals]" => comment.u_id))
+				link_to("#{comment.u_id}: #{comment.u.email}", admin_u_path(comment.u_id))
 			end
 			row :created_at
 			row :updated_at
@@ -41,7 +41,7 @@ ActiveAdmin.register Comment do
 			f.input :u_id
 			f.input :article, :as => :select
 			f.input :body
-			f.input :status
+			f.input :status, :as => :select, :collection => ['public' , 'private' , 'archived' ]
 		end
 		f.actions
 	end

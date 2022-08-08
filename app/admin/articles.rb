@@ -17,7 +17,7 @@ ActiveAdmin.register Article do
 		column :updated_at
 		column :status
 		column :user do |article|
-			link_to("#{article.u_id}",admin_us_path("q[id_eq]" => article.u_id))
+			link_to("#{article.u_id}", admin_u_path(article.u_id))
 		end
 	end
 
@@ -28,9 +28,9 @@ ActiveAdmin.register Article do
 			row :body
 			row :created_at
 			row :updated_at
-			row :Article::status
+			row :status, :as => :select, :collection => ['public' , 'private' , 'archived' ]
 			row :user do |article| 
-				link_to("#{article.u.id}: #{article.u.email}",admin_us_path("q[id_eq]" => article.u_id))
+				link_to("#{article.u.id}: #{article.u.email}", admin_u_path(article.u_id))
 			end
 			row :Comments do
 				link_to('Comments',admin_comments_path({q: {article_id_eq: article.id}}))
